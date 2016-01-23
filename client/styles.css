@@ -2,4 +2,21 @@
 
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
+svg.board {
+  background-color: red;
+}
 
+svg circle {
+  fill: blue;
+  r: 10;
+}
+
+.enemy {
+  height: 50px;
+  width: 50px;
+  background-color: blue;
+}
+
+.enemy circle {
+  ba
+}
