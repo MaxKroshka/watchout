@@ -23,8 +23,8 @@ var Enemy = function(x,y){
   this.y = y;
 };
 
-var enemies = Array.apply(null, Array(20)).map(function(){
-  return new Enemy(Math.floor(Math.random() * (gameBoard.width-10)), Math.floor(Math.random() * (gameBoard.height-10)));
+var enemies = Array.apply(null, Array(40)).map(function(){
+  return new Enemy(Math.floor(Math.random() * (gameBoard.width-30)), Math.floor(Math.random() * (gameBoard.height-30)));
 });
 
 // D3 time 
@@ -43,9 +43,9 @@ d3.select('svg.board').selectAll('image.enemy')
   .enter()
   .append('image')
   .attr('class', 'enemy')
-  .attr('xlink:href','asteroid.png')
-  .attr('width','40')
-  .attr('height','40')
+  .attr('xlink:href','enemy.png')
+  .attr('width','60')
+  .attr('height','60')
   .attr('x', function(data) {return data.x;})
   .attr('y',function(data) {return data.y;});
 
@@ -75,9 +75,9 @@ d3.select('svg.board').selectAll('image#mouse')
   .enter()
   .append('image')
   .attr('id', 'mouse')
-  .attr('xlink:href','rocket.png')
-  .attr('width', '60')
-  .attr('height', '60')
+  .attr('xlink:href','diver.png')
+  .attr('width', '80')
+  .attr('height', '80')
   .attr('x', function(data) {return data.x;})
   .attr('y', function(data) {return data.y;})
   .call(drag);
@@ -87,7 +87,7 @@ function update() {
 
   // change all the data
   enemies = enemies.map(function(enemy) {
-    // assign new x and y locations for each enemy NOT creating new enemy objects
+    // assign new x and y2locations for each enemy NOT creating new enemy objects
     enemy.x = Math.floor(Math.random() * (gameBoard.width-10));
     enemy.y = Math.floor(Math.random() * (gameBoard.height-10));
     return enemy;
@@ -95,18 +95,18 @@ function update() {
 
   // go through and update all the circles with the new data
   d3.select('svg.board').selectAll('image.enemy')
-  .transition().duration(1000)
+  .transition().duration(2000)
   .attr('x', function(data) {return data.x;})
   .attr('y', function(data) {return data.y;});
 }
 
 
-setInterval(update, 1000);
+setInterval(update, 2000);
 
 var collisionCheck = function(enemyX, enemyY, mouseX, mouseY){
-   return (enemyX < mouseX + 30 &&
+   return (enemyX < mouseX + 40 &&
     enemyX + 20 > mouseX &&
-    enemyY < mouseY + 30 &&
+    enemyY < mouseY + 40 &&
     20 + enemyY > mouseY);
 };
 
