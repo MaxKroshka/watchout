@@ -9,6 +9,13 @@ svg.board {
 svg circle {
   fill: blue;
   r: 10;
+  transform: 1s;
+}
+
+svg rect {
+  width: 20px;
+  height: 20px;
+  fill: green;
 }
 
 .enemy {
