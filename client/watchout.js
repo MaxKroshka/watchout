@@ -96,6 +96,38 @@ function update() {
 
 setInterval(update, 1000);
 
+var collisionCheck = function(circleX, circleY, rectX, rectY){
+   return (circleX < rectX + 10 &&
+    circleX + 10 > rectX &&
+    circleY < rectY + 10 &&
+    10 + circleY > rectY);
+};
+
+var collisionDetection = function(){
+  // get currentTime
+  var currentTime = Date.now();
+  var circles = d3.select('svg.board').selectAll('circle');
+  var rect = d3.select('svg.board').selectAll('rect');
+  circles = circles[0].slice(0, circles[0].length);
+  rectX = rect[0][0].x.animVal.value;
+  rectY = rect[0][0].y.animVal.value;
+  circles.forEach(function(circle){
+    if (collisionCheck(Math.floor(circle.cx.animVal.value), Math.floor(circle.cy.animVal.value), Math.floor(rectX), Math.floor(rectY))) {
+      var currentScore = currentTime - gameStartTime;
+      if(currentScore > scoreBoard.highScore){
+        scoreBoard.highScore = currentScore;
+        d3.select('.highscore').text("Highest score: " + scoreBoard.highScore);
+      }
+      gameStartTime = currentTime;
+    } else{
+      d3.select('.current').text("Current score: " + (currentTime - gameStartTime));
+    }
+  });
+};
+setInterval(collisionDetection, 10);
+
+
+
 
 
 
