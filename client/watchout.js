@@ -38,12 +38,16 @@ d3.select('.board')
 
 
 // add circles at random on svg board
-d3.select('svg.board').selectAll('circle')
+d3.select('svg.board').selectAll('image.enemy')
   .data(enemies)
   .enter()
-  .append('circle')
-  .attr('cx', function(data) {return data.x;})
-  .attr('cy',function(data) {return data.y;});
+  .append('image')
+  .attr('class', 'enemy')
+  .attr('xlink:href','asteroid.png')
+  .attr('width','40')
+  .attr('height','40')
+  .attr('x', function(data) {return data.x;})
+  .attr('y',function(data) {return data.y;});
 
 // Mouse drag functionality 
 
@@ -66,11 +70,14 @@ function dragended(d) {
 }
 
 // add mouse to board
-d3.select('svg.board').selectAll('rect')
+d3.select('svg.board').selectAll('image#mouse')
   .data(mouse)
   .enter()
-  .append('rect')
+  .append('image')
   .attr('id', 'mouse')
+  .attr('xlink:href','rocket.png')
+  .attr('width', '60')
+  .attr('height', '60')
   .attr('x', function(data) {return data.x;})
   .attr('y', function(data) {return data.y;})
   .call(drag);
@@ -87,32 +94,32 @@ function update() {
   });
 
   // go through and update all the circles with the new data
-  d3.select('svg.board').selectAll('circle')
+  d3.select('svg.board').selectAll('image.enemy')
   .transition().duration(1000)
-  .attr('cx', function(data) {return data.x;})
-  .attr('cy', function(data) {return data.y;});
+  .attr('x', function(data) {return data.x;})
+  .attr('y', function(data) {return data.y;});
 }
 
 
 setInterval(update, 1000);
 
-var collisionCheck = function(circleX, circleY, rectX, rectY){
-   return (circleX < rectX + 10 &&
-    circleX + 10 > rectX &&
-    circleY < rectY + 10 &&
-    10 + circleY > rectY);
+var collisionCheck = function(enemyX, enemyY, mouseX, mouseY){
+   return (enemyX < mouseX + 30 &&
+    enemyX + 20 > mouseX &&
+    enemyY < mouseY + 30 &&
+    20 + enemyY > mouseY);
 };
 
 var collisionDetection = function(){
   // get currentTime
   var currentTime = Date.now();
-  var circles = d3.select('svg.board').selectAll('circle');
-  var rect = d3.select('svg.board').selectAll('rect');
-  circles = circles[0].slice(0, circles[0].length);
-  rectX = rect[0][0].x.animVal.value;
-  rectY = rect[0][0].y.animVal.value;
-  circles.forEach(function(circle){
-    if (collisionCheck(Math.floor(circle.cx.animVal.value), Math.floor(circle.cy.animVal.value), Math.floor(rectX), Math.floor(rectY))) {
+  var enemies = d3.select('svg.board').selectAll('image.enemy');
+  var mouse = d3.select('svg.board').selectAll('image#mouse');
+  enemies = enemies[0].slice(0, enemies[0].length);
+  mouseX = mouse[0][0].x.animVal.value;
+  mouseY = mouse[0][0].y.animVal.value;
+  enemies.forEach(function(enemy){
+    if (collisionCheck(Math.floor(enemy.x.animVal.value), Math.floor(enemy.y.animVal.value), Math.floor(mouseX), Math.floor(mouseY))) {
       var currentScore = currentTime - gameStartTime;
       if(currentScore > scoreBoard.highScore){
         scoreBoard.highScore = currentScore;

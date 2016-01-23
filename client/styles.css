@@ -2,16 +2,21 @@
 
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
+@font-face {
+    font-family: Arkhip;
+    src: url(Arkhip_font.otf);
+}
 body {
   margin: 0;
 }
 .scoreboard{
+  font-family: Arkhip;
   position: absolute;
   top: 20px;
-  right: 20px;
+  left: 20px;
 }
 svg.board {
-  background-color: red;
+  background-color: rgb(231, 76, 60);
 }
 
 svg circle {
@@ -20,11 +25,6 @@ svg circle {
   transform: 1s;
 }
 
-svg rect {
-  width: 20px;
-  height: 20px;
-  fill: green;
-}
 
 .enemy {
   height: 50px;
@@ -32,6 +32,3 @@ svg rect {
   background-color: blue;
 }
 
-.enemy circle {
-  ba
-}
