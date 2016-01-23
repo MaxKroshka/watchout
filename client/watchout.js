@@ -23,9 +23,7 @@ var Enemy = function(x,y){
   this.y = y;
 };
 
-var enemies = Array.apply(null, Array(40)).map(function(){
-  return new Enemy(Math.floor(Math.random() * (gameBoard.width-30)), Math.floor(Math.random() * (gameBoard.height-30)));
-});
+var enemies = [new Enemy(Math.floor(Math.random() * (gameBoard.width-30)), Math.floor(Math.random() * (gameBoard.height-30)))];
 
 // D3 time 
 
@@ -36,18 +34,6 @@ d3.select('.board')
   .attr('width', gameBoard.width)
   .attr('class', 'board');
 
-
-// add circles at random on svg board
-d3.select('svg.board').selectAll('image.enemy')
-  .data(enemies)
-  .enter()
-  .append('image')
-  .attr('class', 'enemy')
-  .attr('xlink:href','enemy.png')
-  .attr('width','60')
-  .attr('height','60')
-  .attr('x', function(data) {return data.x;})
-  .attr('y',function(data) {return data.y;});
 
 // Mouse drag functionality 
 
@@ -98,6 +84,18 @@ function update() {
   .transition().duration(2000)
   .attr('x', function(data) {return data.x;})
   .attr('y', function(data) {return data.y;});
+
+  // add circles at random on svg board inc # of jellies every 5 sec
+  d3.select('svg.board').selectAll('image.enemy')
+    .data(enemies)
+    .enter()
+    .append('image')
+    .attr('class', 'enemy')
+    .attr('xlink:href','enemy.png')
+    .attr('width','60')
+    .attr('height','60')
+    .attr('x', function(data) {return data.x;})
+    .attr('y',function(data) {return data.y;});
 }
 
 
@@ -113,6 +111,7 @@ var collisionCheck = function(enemyX, enemyY, mouseX, mouseY){
 var collisionDetection = function(){
   // get currentTime
   var currentTime = Date.now();
+    d3.select('.current').text("Current score: " + Math.floor((currentTime - gameStartTime)/10));
   var enemies = d3.select('svg.board').selectAll('image.enemy');
   var mouse = d3.select('svg.board').selectAll('image#mouse');
   enemies = enemies[0].slice(0, enemies[0].length);
@@ -122,16 +121,30 @@ var collisionDetection = function(){
     if (collisionCheck(Math.floor(enemy.x.animVal.value), Math.floor(enemy.y.animVal.value), Math.floor(mouseX), Math.floor(mouseY))) {
       var currentScore = currentTime - gameStartTime;
       if(currentScore > scoreBoard.highScore){
-        scoreBoard.highScore = currentScore;
+        scoreBoard.highScore = Math.floor(currentScore/10);
         d3.select('.highscore').text("Highest score: " + scoreBoard.highScore);
+        // clear enemies dataset
       }
+      window.enemies = [];
+      d3.select('svg.board').selectAll('image.enemy')
+      .data(window.enemies)
+      .exit()
+      .remove();
       gameStartTime = currentTime;
-    } else{
-      d3.select('.current').text("Current score: " + (currentTime - gameStartTime));
-    }
+      d3.select('.scoreboard').
+      style('border','2px solid red');
+      setInterval(function(){
+        d3.select('.scoreboard').
+        style('border','2px solid white');
+      }, 1000);
+    } 
+
   });
 };
 setInterval(collisionDetection, 10);
+setInterval(function(){
+  window.enemies.push(new Enemy(Math.floor(Math.random() * (gameBoard.width-30)), Math.floor(Math.random() * (gameBoard.height-30))));
+}, 5000);
 
 
 
