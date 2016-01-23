@@ -2,6 +2,14 @@
 
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
+body {
+  margin: 0;
+}
+.scoreboard{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
 svg.board {
   background-color: red;
 }

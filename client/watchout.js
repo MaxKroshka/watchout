@@ -2,14 +2,14 @@
 
 
 var gameBoard = {
-  height: 400,
-  width: 600
+  height: window.innerHeight,
+  width: window.innerWidth
 };
 
 // mouse data
 var mouse = [{
-  x: 0,
-  y: 0
+  x: window.innerWidth/2,
+  y: window.innerHeight/2
 }];
 
 var scoreBoard = {
@@ -23,7 +23,7 @@ var Enemy = function(x,y){
   this.y = y;
 };
 
-var enemies = Array.apply(null, Array(10)).map(function(){
+var enemies = Array.apply(null, Array(20)).map(function(){
   return new Enemy(Math.floor(Math.random() * (gameBoard.width-10)), Math.floor(Math.random() * (gameBoard.height-10)));
 });
 
